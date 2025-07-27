@@ -1,1 +1,1 @@
-Bot WhatsApp ZyrooBot dengan Menggunakan @whiskeysockets/baileys
+Bot: Yumeko Bot Powered By Russian Mafia Crow @whiskeysockets/baileys
