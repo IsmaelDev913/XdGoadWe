@@ -1,6 +1,6 @@
 
 
-const demoteHandler = async ({ bot, m, reply }) => {
+const demoteHandler = async (bot, { m, reply }) => {
 
   const jid = m.key.remoteJid;
   // Traducción a ruso // Russian translation
@@ -12,20 +12,20 @@ const demoteHandler = async ({ bot, m, reply }) => {
   const isAdmin = admins.includes(sender);
 
   if (!isAdmin) {
-  return await bot.sendMessage(jid, { text: "> ❌ Эту команду могут использовать только администраторы." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return await reply("> ❌ Эту команду могут использовать только администраторы.");
   }
   const mentioned = m.message?.extendedTextMessage?.contextInfo?.mentionedJid;
   if (!mentioned || mentioned.length === 0) {
-  return await sock.sendMessage(jid, { text: ">❗ Пометить пользователя для понижения." },  { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return await reply(">❗ Пометить пользователя для понижения.");
   }
   try {
-   const nt = await bot.groupParticipantsUpdate(jid, [mentioned[0]], "demote");
-    await bot.sendMessage(jid, { text: `> ⛔ пользователь успешно понижен.` }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+    await bot.groupParticipantsUpdate(jid, [mentioned[0]], "demote");
+    const nt = await reply(`> ⛔ пользователь успешно понижен.`);
     await bot.sendMessage(jid, { react: { text: '🤖', key: nt.key } });
 
   } catch (e) {
    console.error("❌ Error al degradar:", e);
-   await sock.sendMessage(jid, { text: "> ❌ Не удалось понизить уровень пользователя ." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+   await reply("> ❌ Не удалось понизить уровень пользователя .");
   }
 
 }
