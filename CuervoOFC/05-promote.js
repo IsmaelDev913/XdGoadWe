@@ -18,16 +18,16 @@ const promoteHandler = async (bot, { m, reply }) => {
   const mentioned = m.message?.extendedTextMessage?.contextInfo?.mentionedJid;
 
   if (!mentioned || mentioned.length === 0) {
-  return await reply("> ❗ упомянуть пользователя для продвижения." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return await reply("> ❗ упомянуть пользователя для продвижения.");
   }
 
   try {
   await bot.groupParticipantsUpdate(jid, [mentioned[0]], "promote");
-  const nt = await reply(`> ✅ пользователь был успешно повышен .` }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  const nt = await reply(`> ✅ пользователь был успешно повышен .`);
   await bot.sendMessage(jid, { react: { text: '🤖', key: nt.key } });
   } catch (e) {
   console.error("❌ Error al promover:", e);
-  await reply("> ❌ Не удалось разместить ваш заказ." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("> ❌ Не удалось разместить ваш заказ.");
   }
 
 }
