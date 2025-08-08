@@ -1,6 +1,6 @@
 
 
-const kickHandler = async ({ bot, reply, m }) => {
+const kickHandler = async (bot, { reply, m }) => {
 
   const jid = m.key.remoteJid;
   // Traducción a ruso // Russian translation
