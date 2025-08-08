@@ -1,4 +1,4 @@
-const inviteHandler = async ({ reply, bot, m }) => {
+const inviteHandler = async (bot, { reply, m }) => {
   
   const jid = m.key.remoteJid;
   // Traducción a ruso // Russian translation
@@ -10,18 +10,18 @@ const inviteHandler = async ({ reply, bot, m }) => {
   const isAdmin = admins.includes(sender);
 
   if (!isAdmin) {
-    return await bot.sendMessage(jid, { text: "> ❌ Эту команду могут использовать только администраторы." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+    return await reply("> ❌ Эту команду могут использовать только администраторы.");
 
   }
 
   try {
     const code = await bot.groupInviteCode(jid);
     const url = `https://chat.whatsapp.com/${code}`;
-    const nt = await bot.sendMessage(jid, { text: `╭╶╌╌╌╌╌┈┈┈┈╌╌╌╌╌╶╮\n┊🔗 Ссылка на группу:\n┊${url}\n╰╶╌╌╌╌╌┈┈┈┈╌╌╌╌╌╶╯` }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+    const nt = await reply(`╭╶╌╌╌╌╌┈┈┈┈╌╌╌╌╌╶╮\n┊🔗 Ссылка на группу:\n┊${url}\n╰╶╌╌╌╌╌┈┈┈┈╌╌╌╌╌╶╯`);
     await bot.sendMessage(jid, { react: { text: '🤖', key: nt.key } });
   } catch (e) {
     console.error("❌ Error al obtener link:", e);
-    await bot.sendMessage(jid, { text: "> ❌ Не удалось получить ссылку на группу." },  { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+    await reply("> ❌ Не удалось получить ссылку на группу.");
   }
 
 }
