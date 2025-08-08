@@ -1,4 +1,4 @@
-const cleanHandler = async ({ bot, reply, m }) => {
+const cleanHandler = async (bot, { reply, m }) => {
   const jid = m.key.remoteJid;
     // Traducción a ruso // Russian translation
   if (!jid) return reply("⚠️ Неверный JID (сообщение не может быть отправлено).");
