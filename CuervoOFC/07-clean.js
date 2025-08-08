@@ -8,7 +8,7 @@ const cleanHandler = async ({ bot, reply, m }) => {
   const admins = metadata.participants.filter(p => p.admin).map(p => p.id);
 
   if (!admins.includes(sender))
-  return bot.sendMessage(jid, { text: "> ❌ Эту команду могут использовать только администраторы." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return reply("> ❌ Эту команду могут использовать только администраторы.");
   const messages = await bot.groupMessages(jid, 50);
   const botMsgs = messages.filter(msg => msg.key.fromMe);
 
@@ -16,6 +16,6 @@ const cleanHandler = async ({ bot, reply, m }) => {
   await bot.sendMessage(jid, { delete: msg.key });
   }
 
-  await bot.sendMessage(jid, { text: "> 🧹 Сообщения успешно удалены." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("> 🧹 Сообщения успешно удалены.");
 };
 export default cleanHandler;
