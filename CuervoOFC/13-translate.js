@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const translateHandler = async ({ reply, bot, m, args }) => {
+const translateHandler = async (bot, { reply, m, args }) => {
   const jid = m.key.remoteJid;
   // Traducción a ruso // Russian translation
   if (!jid) return reply("⚠️ Неверный JID (сообщение не может быть отправлено).");
