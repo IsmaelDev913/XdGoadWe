@@ -1,6 +1,6 @@
 
 
-const promoteHandler = async ({ bot, m, reply }) => {
+const promoteHandler = async (bot, { m, reply }) => {
   const jid = m.key.remoteJid;
   // Traducción a ruso // Russian translation
   if (!jid) return reply("⚠️ Неверный JID (сообщение не может быть отправлено).");
@@ -11,23 +11,23 @@ const promoteHandler = async ({ bot, m, reply }) => {
   const isAdmin = admins.includes(sender);
 
   if (!isAdmin) {
-  return await bot.sendMessage(jid, { text: "> ❌ Только администраторы могут использовать команду." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return await reply("> ❌ Только администраторы могут использовать команду.");
 
   }
 
   const mentioned = m.message?.extendedTextMessage?.contextInfo?.mentionedJid;
 
   if (!mentioned || mentioned.length === 0) {
-  return await bot.sendMessage(jid, { text: "> ❗ упомянуть пользователя для продвижения." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return await reply("> ❗ упомянуть пользователя для продвижения." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
   }
 
   try {
   await bot.groupParticipantsUpdate(jid, [mentioned[0]], "promote");
-  const nt = await bot.sendMessage(jid, { text: `> ✅ пользователь был успешно повышен .` }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  const nt = await reply(`> ✅ пользователь был успешно повышен .` }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
   await bot.sendMessage(jid, { react: { text: '🤖', key: nt.key } });
   } catch (e) {
   console.error("❌ Error al promover:", e);
-  await bot.sendMessage(jid, { text: "> ❌ Не удалось разместить ваш заказ." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("> ❌ Не удалось разместить ваш заказ." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
   }
 
 }
