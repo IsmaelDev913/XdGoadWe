@@ -13,19 +13,19 @@ const kickHandler = async ({ bot, reply, m }) => {
   .map(p => p.id);
   const isAdmin = admins.includes(sender);
   if (!isAdmin) {
-  return await bot.sendMessage(jid, { text: "> ❌ Эту команду могут использовать только администраторы." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return await reply("> ❌ Эту команду могут использовать только администраторы.");
   }
   const mentioned = m.message?.extendedTextMessage?.contextInfo?.mentionedJid;
   if (!mentioned || mentioned.length === 0) {
-  return await bot.sendMessage(jid, { text: "> ❗ пометить пользователя для удаления.\nпример команды: /устранять @пользователь" }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  return await reply("> ❗ пометить пользователя для удаления.\nпример команды: /устранять @пользователь");
   }
   try {
   await bot.groupParticipantsUpdate(jid, [mentioned[0]], "remove");
-  const nt = await bot.sendMessage(jid, { text: `> 👢 удаленный пользователь с пользователем.` }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  const nt = await reply(`> 👢 удаленный пользователь с пользователем.`);
   await bot.sendMessage(jid, { react: { text: '🤖', key: nt.key } });
   } catch (e) {
   console.error("❌ Error al expulsar:", e);
-  await bot.sendMessage(jid, { text: "> ❌ Ошибка при запуске фильтра. Когда я получил права администратора???" }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("> ❌ Ошибка при запуске фильтра. Когда я получил права администратора???");
   }
 }
 export default kickHandler;
