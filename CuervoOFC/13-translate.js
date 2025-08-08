@@ -6,7 +6,7 @@ const translateHandler = async ({ reply, bot, m, args }) => {
   if (!jid) return reply("⚠️ Неверный JID (сообщение не может быть отправлено).");
   await bot.sendMessage(jid, { react: { text: "⏱️", key: m.key } });
   if (args.length < 2) {
-  await sock.sendMessage(jid, { text: "🈯 Uso: /traducir [idioma] [texto]\nEjemplo: /traducir en hola mundo" }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("🈯 использовать .переводить [язык] <Текст>");
   return;
   }
   const lang = args[0];
@@ -21,9 +21,9 @@ const translateHandler = async ({ reply, bot, m, args }) => {
   headers: { "Content-Type": "application/json" }
   });
   const traduccion = res.data.translatedText;
-  await sock.sendMessage(jid, { text: `🈯 Traducción (${lang}): ${traduccion}` }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply(`🈯 перевод (${lang}): ${traduccion}`);
   } catch {
-  await sock.sendMessage(jid, { text: "❌ Error al traducir el texto." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("❌ ошибка в переводе.");
   }
 };
 export default translateHandler
