@@ -18,10 +18,10 @@ import * as config from './cuervo/config.js';
   global.isBotReady = false; // inicialmente falso // initially false
 
   // ✅ Guardar número del bot (para detección de auto-chat) // ✅ Save bot number (for self-chat detection)
-  global.botNumber = cuervo.user.id.split(':')[0]; // 'cuervo' en lugar de 'kizon'
+  //global.botNumber = cuervo.user.id.split(':')[0]; 
 
   // ✅ Emparejamiento QR si no está conectado // ✅ QR Pairing if not connected
-  if (usePairingCode && !cuervo.user && !cuervo.authState.creds.registered) { // 'cuervo' en lugar de 'kizon'
+  if (usePairingCode && !cuervo.user && !cuervo.authState.creds.registered) { 
     const rl = await import('readline');
     const rlInterface = rl.createInterface({
       input: process.stdin,
