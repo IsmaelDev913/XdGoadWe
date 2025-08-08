@@ -15,7 +15,7 @@
     "nodemon": "^3.1.9"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "github:Gatanina-Li/Baileys",
+    "@whiskeysockets/baileys": "^6.7.18",
     "axios": "^1.9.0",
     "chalk": "^5.4.1",
     "moment": "^2.30.1",
