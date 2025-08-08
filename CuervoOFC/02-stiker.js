@@ -1,92 +1,39 @@
-import { downloadMediaMessage } from '@whiskeysockets/baileys';
-import { writeFileSync, unlinkSync, existsSync, mkdirSync } from 'fs'; // Agregado existsSync, mkdirSync
-import { spawn } from 'child_process';
+import { downloadContentFromMessage } from "@whiskeysockets/baileys":
+import { Sticker, StickerTypes } from "wa-sticker-formatter";
 
-  const stickerHandler = async (m, { bot }) => {
-  const msg = m.message;
-  // Acceso seguro a quotedMessage y imageMessage
-  const quotedMsg = msg?.extendedTextMessage?.contextInfo?.quotedMessage;
-  const isImage = quotedMsg?.imageMessage;
+const stickerHandler = async (bot, { reply, m }) => {
+  const jid = m.key.remoteJid;
+  const quoted = m.message?.extendedTextMessage?.contextInfo?.quotedMessage;
 
-  // Asegurar que el directorio temp exista
-  const tempDir = '../temp';
-  if (!existsSync(tempDir)) {
-    mkdirSync(tempDir);
+  if (!quoted) {
+    return await reply("⚠️ *Ответьте на 10-секундное изображение или видео, чтобы создать стикер.*");
   }
 
-  // Traducción a ruso // Russian translation
-  if (!isImage) {
-    return bot.sendMessage(m.key.remoteJid, { text: '> ❗Ответьте на изображение с помощью команды .stiker' }, { quoted: m });
+  const type = Object.keys(quoted)[0];
+  if (!["imageMessage", "videoMessage"].includes(type)) {
+    return reply("❌ *только изображения или видео.*");
   }
 
   try {
-    // ✅ Descargar medios // Download media
-    const mediaBuffer = await downloadMediaMessage(
-      { message: quotedMsg },  // MUST be wrapped as { message: ... }
-      'buffer',
-      {}
-    );
+    const media = quoted[type];
+    const stream = await downloadContentFromMessage(media, type === "imageMessage" ? "image" : "video");
 
-    const inputPath = `../temp/${Date.now()}.jpg`;
-    const outputPath = inputPath.replace('.jpg', '.webp');
-    writeFileSync(inputPath, mediaBuffer);
+    let buffer = Buffer.from([]);
+    for await (const chunk of stream) buffer = Buffer.concat([buffer, chunk]);
 
-    // 🔄 Convertir a sticker vía ffmpeg // Convert to sticker via ffmpeg
-    await new Promise((resolve, reject) => {
-      const ffmpegProcess = spawn('ffmpeg', [
-        '-i', inputPath,
-        '-vcodec', 'libwebp',
-        '-vf', 'scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
-        '-lossless', '1',
-        '-compression_level', '6',
-        '-qscale', '75',
-        '-preset', 'picture',
-        '-an', '-vsync', '0',
-        outputPath
-      ]);
-
-      let errorMessage = '';
-      ffmpegProcess.stderr.on('data', (data) => {
-        errorMessage += data.toString();
-      });
-
-      ffmpegProcess.on('close', (code) => {
-        if (code === 0) {
-          resolve();
-        } else {
-          // console.error en español // console.error in Spanish
-          console.error(`ffmpeg salió con código ${code}: ${errorMessage}`);
-          // Mensaje de error para el usuario en ruso // Error message for user in Russian
-          reject(new Error('Не удалось создать стикер (ошибка конвертации).'));
-        }
-      });
-      ffmpegProcess.on('error', (err) => { // Captura errores si ffmpeg no puede ser iniciado // Catches errors if ffmpeg can't be spawned
-        // console.error en español // console.error in Spanish
-        console.error('No se pudo iniciar el proceso de ffmpeg:', err);
-        // Mensaje de error para el usuario en ruso // Error message for user in Russian
-        reject(new Error('Не удалось запустить инструмент конвертации стикеров. Убедитесь, что ffmpeg установлен.'));
-      });
+    const sticker = new Sticker(buffer, {
+      pack: "юмэко бот",
+      author: "Воронья мафия",
+      type: StickerTypes.FULL,
     });
 
-    // ✅ Enviar sticker // Send sticker
-    await bot.sendMessage(m.key.remoteJid, {
-      sticker: { url: outputPath }
-    }, { quoted: m });
+    const stickerBuffer = await sticker.toBuffer();
+
+    await sock.sendMessage(from, { sticker: stickerBuffer }, { quoted: m });
 
   } catch (err) {
-    // console.error en español // console.error in Spanish
-    console.error("Error en stickerHandler:", err);
-    // Mensaje de error para el usuario en ruso // Error message for user in Russian
-    return bot.sendMessage(m.key.remoteJid, { text: `> ❌ Произошла ошибка: ${err.message}` }, { quoted: m });
-  } finally {
-    // 🧹 Limpiar archivos (asegurarse de que existan antes de eliminar) // Clean up files (ensure they exist before deleting)
-    if (existsSync(inputPath)) {
-      unlinkSync(inputPath);
-    }
-    if (existsSync(outputPath)) {
-      unlinkSync(outputPath);
-    }
+    console.error("❌ Sticker error:", err);
+    await reply("❌ ошибка создания стикера");
   }
 };
-
-export default stickerHandler;
+export default stickerHandler 
