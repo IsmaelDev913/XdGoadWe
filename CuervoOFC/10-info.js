@@ -1,6 +1,6 @@
 
 
-const infoHandler = async ({ bot, reply, m }) => {
+const infoHandler = async (bot { reply, m }) => {
   const jid = m.key.remoteJid;
   // Traducción a ruso // Russian translation
   if (!jid) return reply("⚠️ Неверный JID (сообщение не может быть отправлено).");
@@ -18,7 +18,7 @@ const infoHandler = async ({ bot, reply, m }) => {
 
   } catch (e) {
   console.error("Error en /info:", e);
-  await sock.sendMessage(jid, { text: "> ❌ Не удалось получить информацию о группе." }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("> ❌ Не удалось получить информацию о группе.");
   }
 
 }
