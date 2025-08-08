@@ -18,11 +18,11 @@ const tangHandler = async (bot, { reply, args, m }) => {
   return;
   }
   if (args.length === 0) {
-  await reply("❗ использование команды: .ярлык [сообщение]" }, { contextInfo: { externalAdReply: { title: "Юмэко Бот", body: "работает на русской мафуа", mediaType: 1, previewType: 'PHOTO', thumbnailUrl: 'https://files.catbox.moe/651gmb.jpg', renderLargerThumbnail: true, sourceUrl: 'https://dash.cuervo-host.xyz' } }, }, { quoted: m });
+  await reply("❗ использование команды: .ярлык [сообщение]");
   return;
   }
   const texto = args.join(" ");
-  await bot.sendMessage(jid, { text: texto, mentions: groupMetadata.participants.map(p => p.id) });
+  await bot.sendMessage(jid, { text: texto, mentions: groupMetadata.participants.map(p => p.id) }, { quoted: m});
   } catch (error) {
   console.error(error);
   await reply("❌ ошибка в работе команды.");
