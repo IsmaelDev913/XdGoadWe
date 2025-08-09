@@ -1,6 +1,6 @@
 
 
-const tangHandler = async (bot, { reply, args, m }) => {
+const tagHandler = async (bot, { reply, args, m }) => {
   const jid = m.key.remoteJid;
   // Traducción a ruso // Russian translation
   if (!jid) return reply("⚠️ Неверный JID (сообщение не может быть отправлено).");
