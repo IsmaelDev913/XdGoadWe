@@ -1,4 +1,4 @@
-import { downloadContentFromMessage } from "@whiskeysockets/baileys":
+import { downloadContentFromMessage } from "@whiskeysockets/baileys";
 import { Sticker, StickerTypes } from "wa-sticker-formatter";
 
 const stickerHandler = async (bot, { reply, m }) => {
